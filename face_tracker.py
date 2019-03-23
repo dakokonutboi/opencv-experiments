@@ -8,6 +8,7 @@ cv = cv2
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
+mouth_cascade = cv2.CascadeClassifier('haarcascade_mouth.xml')
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 
@@ -20,6 +21,7 @@ while True:
     img = frame
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+    mouths = mouth_cascade.detectMultiScale(gray, 1.3, 5)
 
     for (x,y,w,h) in faces:
         img = cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
@@ -29,6 +31,8 @@ while True:
         eyes = eye_cascade.detectMultiScale(roi_gray)
         for (ex,ey,ew,eh) in eyes:
             cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
+        for (mx,my,mw,mh) in mouths:
+            cv2.rectangle(roi_color,(mx,my),(mx+mw,my+mh),(0,0,255),2)
     cv2.imshow('img',img)
     if cv.waitKey(10) & 0xFF == ord ('q'):
         break
